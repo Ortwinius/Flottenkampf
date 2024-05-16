@@ -1,0 +1,5 @@
+﻿  game.cpp
+C:\Users\ortwi\OneDrive\Dokumente\Studium\Semester2\OOP\Übungen\Flottenkampf\Flottenkampf\game.cpp(95,78): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+  main.cpp
+  Code wird generiert...
+  Flottenkampf.vcxproj -> C:\Users\ortwi\OneDrive\Dokumente\Studium\Semester2\OOP\Übungen\Flottenkampf\Flottenkampf\x64\Debug\Flottenkampf.exe
