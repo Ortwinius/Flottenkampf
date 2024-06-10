@@ -9,9 +9,19 @@ public:
 	{
 		initialize();
 	}
-	
+
+	~Cruiser() = default;
+
 	void attack(Ship& other) override
 	{
+		ShipType type = other.getShipType();
+
+		if (type == ShipType::Uninitialized)
+		{
+			std::cerr << "Error: Target ship has an unknown type." << std::endl;
+			return; // Handle the error appropriately
+		}
+
 		std::cout << "Bombarding ship of type " << convertShipTypeToString(other.getShipType()) << std::endl;
 	}
 private:

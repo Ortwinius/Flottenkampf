@@ -17,6 +17,6 @@ const std::string& convertShipTypeToString(int type)
 	case 3:
 		return "Cruiser";
 	default:
-		return "";
+		return "Uninitialized";
 	}
 }

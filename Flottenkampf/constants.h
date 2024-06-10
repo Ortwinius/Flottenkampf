@@ -4,7 +4,8 @@ enum ShipType
 {
 	FighterType,
 	DestroyerType,
-	CruiserType
+	CruiserType,
+	Uninitialized
 };
 
 enum Ability
@@ -18,4 +19,5 @@ namespace DefaultValues
 {
 	constexpr int minFleetShipCount = 1;
 	constexpr int maxFleetShipCount = 9;
+	constexpr int fleetNumber = 2;
 }

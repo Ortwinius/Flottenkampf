@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include <random>
+#include <algorithm>
 #include <conio.h>
 
 #include "common.h"
@@ -33,6 +34,7 @@ private:
 	void update();
 	void handleInput();
 	void render();
+	void fleetAttack(Fleet& attackerFleet, Fleet& defenderFleet);
 	int validateFleetSize();
 	Ship* chooseRandomShip(const Fleet& chosenFleet);
 };
