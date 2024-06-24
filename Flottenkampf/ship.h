@@ -15,12 +15,12 @@ public:
 	int getHullHP() { return this->hullHP; }
 	int getSize() { return this->size; }
 	int getAttackDamage() { return this->attackDamage; }
-	void takeDamage(int damage) { hullHP -= damage; }
 	const ShipType& getShipType() const { return type; }
 	const Ability& getAbility() const { return ability; }
 
 protected:
 	virtual void initialize() = 0;
+	void takeDamage(int damage) { hullHP -= damage; }
 
 	int hullHP;
 	int size;
