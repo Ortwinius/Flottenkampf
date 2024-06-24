@@ -5,31 +5,34 @@ Game::Game()
 	, rd()
 	, gen(rd())
 {
+	srand(time(NULL));
 	initGame();
 }
 
+// vector of ship pointers is automatically deleted (unique_ptrs) -> no memory leak
 Game::~Game() = default;
 
 void Game::initGame()
 {
-	//std::cout << "Fleet 1 : " << std::endl;
-	//int fleetSize1 = validateFleetSize();
-	//std::cout << "Fleet 2: " << std::endl;
-	//int fleetSize2 = validateFleetSize();
+	std::cout << "==================" << std::endl;
+	std::cout << "  CLASH OF SHIPS" << std::endl;
+	std::cout << "==================" << std::endl << std::endl;
 
-	int fleetSize1 = 1;
-	int fleetSize2 = 1;
+	std::cout << "Fleet 1 : " << std::endl;
+	int fleetSize1 = validateFleetSize();
 
-	// Initialize fleet1 with one Cruiser
+	// Initialize fleet1
 	for (int i = 0; i < fleetSize1; ++i)
 	{
-		this->fleet1.push_back(std::make_unique<Cruiser>());
+		addShipToFleet(fleet1);
 	}
 
-	// Initialize fleet2 with one Cruiser
+	std::cout << "Fleet 2: " << std::endl;
+	int fleetSize2 = validateFleetSize();
+	// Initialize fleet2 
 	for (int i = 0; i < fleetSize2; ++i)
 	{
-		this->fleet2.push_back(std::make_unique<Cruiser>());
+		addShipToFleet(fleet2);
 	}
 }
 
@@ -37,10 +40,10 @@ void Game::run()
 {
 	while (gameIsRunning)
 	{
-		handleInput();
+		//handleInput();
 		update();
-		render();
 	}
+	showFinalStats();
 }
 
 // while one ship of both fleets is alive attack each other
@@ -61,43 +64,54 @@ void Game::update()
 // and if HP < 1 -> ship gets deleted from vec
 void Game::fleetAttack(Fleet& attackerFleet, Fleet& defenderFleet)
 {
-	Ship* attackShip = chooseRandomShip(attackerFleet);
-	Ship* defenderShip = chooseRandomShip(defenderFleet);
+	if (defenderFleet.size() < 1 || attackerFleet.size() < 1)
+	{
+		gameIsRunning = false;
+		return;
+	}
+
+	Ship* attackShip = chooseShipByIndex(attackerFleet);
+	Ship* defenderShip = chooseShipByIndex(defenderFleet);
 
 	if (defenderShip == nullptr || attackShip == nullptr)
 	{
 		std::cerr << "Error: attacker or defender are initalized with null. " << std::endl << "Cannot proceed with the attack." << std::endl;
 		return;
 	}
-	int attackProb = defenderShip->getSize();
-	std::cout << "attackProb: " << attackProb << std::endl;
 
-	if (generateRandomNumber(gen, 1, 10) < attackProb)
+	attackShip->attack(defenderShip);
+
+	if (defenderShip->getHullHP() < 1)
 	{
-		attackShip->attack(*defenderShip);
-
-		if (defenderShip->getHullHP() > 1)
-		{
-			std::cout << "Ship of type " 
-				<< convertShipTypeToString(defenderShip->getShipType()) 
-					<< " destroyed" << std::endl;
-
-			defenderFleet.erase(
-				std::remove_if(
-					defenderFleet.begin(), defenderFleet.end(),
-					[&defenderShip](const std::unique_ptr<Ship>& ship)
-					{
-						return ship.get() == defenderShip;
-					}
-				),
-				defenderFleet.end()
-			);
-		}
+		defenderFleet.erase(
+			std::remove_if(
+				defenderFleet.begin(), defenderFleet.end(),
+				[&defenderShip](const std::unique_ptr<Ship>& ship)
+				{
+					return ship.get() == defenderShip;
+				}
+			),
+			defenderFleet.end()
+		);
+		std::cout << "Ship of type "
+			<< convertShipTypeToString(defenderShip->getShipType())
+			<< " destroyed" << std::endl;
 	}
-	else
+}
+
+void Game::showFleetList(const Fleet& chosenFleet)
+{
+	std::cout << std::endl;
+	for (int i = 0; i < chosenFleet.size(); i++)
 	{
-		std::cout << "Attack not successful - next turn..." << std::endl;
+		std::cout << i + 1 << ".:" << convertShipTypeToString(chosenFleet[i]->getShipType()) << " - " << chosenFleet[i]->getHullHP() << " HP " << std::endl;
 	}
+}
+
+void Game::showFinalStats()
+{
+	int championIndex = fleet1.size() > 0 ? 1 : 2;
+	std::cout << "Fleet " << championIndex << " has won a glorious battle!" << std::endl;
 }
 
 
@@ -110,9 +124,8 @@ void Game::handleInput()
 
 int Game::validateFleetSize()
 {
-	bool validated = false;
 	int size = 0;
-	while (!validated)
+	while (true)
 	{
 		std::cout << "Input size of fleet (1-9): ";
 		std::cin >> size;
@@ -124,16 +137,54 @@ int Game::validateFleetSize()
 	return size;
 }
 
+void Game::addShipToFleet(Fleet& chosenFleet)
+{
+	int type;
+	while (true)
+	{
+		std::cout << "Choose ship type (1-3): ";
+		std::cin >> type;
+		if (type >= 1 && type <= 3)
+			break;
+
+		std::cout << std::endl << "Invalid type" << std::endl;
+	}
+
+	type -= 1; // convert index
+
+	switch (type)
+	{
+		case ShipType::CruiserType:
+			chosenFleet.push_back(std::make_unique<Cruiser>());
+			break;
+		case ShipType::DestroyerType:
+			chosenFleet.push_back(std::make_unique<Destroyer>());
+			break;
+		case ShipType::FighterType:
+			chosenFleet.push_back(std::make_unique<Fighter>());
+			break;
+	}
+}
+
+Ship* Game::chooseShipByIndex(const Fleet& chosenFleet)
+{
+	int index = 0;
+	while (true)
+	{
+		std::cout << "Choose ship of fleet (1-" << chosenFleet.size() << "): ";
+		showFleetList(chosenFleet);
+		std::cin >> index;
+		if (index >= 1 && index <= chosenFleet.size())
+			break;
+
+		std::cout << std::endl << "Invalid index" << std::endl;
+	}
+	//std::cout << "Chosen ship "
+	return chosenFleet[index-1].get();
+}
+
 Ship* Game::chooseRandomShip(const Fleet& chosenFleet)
 {
 	Ship* chosenShip = chosenFleet[generateRandomNumber(gen, 0, chosenFleet.size() - 1)].get();
 	return chosenShip;
 }
-
-
-// for rendering UI and world map for debugging
-void Game::render()
-{
-
-}
-

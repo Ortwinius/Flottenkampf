@@ -127,6 +127,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cruiser.cpp" />
+    <ClCompile Include="destroyer.cpp" />
+    <ClCompile Include="fighter.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="utils.cpp" />
@@ -135,6 +138,8 @@
     <ClInclude Include="common.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="cruiser.h" />
+    <ClInclude Include="destroyer.h" />
+    <ClInclude Include="fighter.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="ship.h" />
     <ClInclude Include="utils.h" />

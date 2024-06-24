@@ -7,10 +7,13 @@
 #include <random>
 #include <algorithm>
 #include <conio.h>
+#include <exception>
 
 #include "common.h"
 #include "ship.h"
 #include "cruiser.h"
+#include "destroyer.h"
+#include "fighter.h"
 
 class Game
 {
@@ -33,8 +36,11 @@ private:
 	void initGame();
 	void update();
 	void handleInput();
-	void render();
 	void fleetAttack(Fleet& attackerFleet, Fleet& defenderFleet);
+	void showFleetList(const Fleet& chosenFleet);
+	void showFinalStats();
 	int validateFleetSize();
+	void addShipToFleet(Fleet& chosenFleet);
+	Ship* chooseShipByIndex(const Fleet& chosenFleet);
 	Ship* chooseRandomShip(const Fleet& chosenFleet);
 };

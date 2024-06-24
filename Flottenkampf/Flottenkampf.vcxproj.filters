@@ -24,6 +24,15 @@
     <ClCompile Include="utils.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="cruiser.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="destroyer.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="fighter.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -42,6 +51,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="cruiser.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="destroyer.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="fighter.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

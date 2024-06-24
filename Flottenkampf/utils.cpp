@@ -6,15 +6,15 @@ const int generateRandomNumber(std::mt19937& gen, int min, int max)
 	return distribution(gen);
 }
 
-const std::string& convertShipTypeToString(int type)
+std::string convertShipTypeToString(int type)
 {
 	switch (type)
 	{
-	case 1:
+	case 0:
 		return "Fighter";
-	case 2:
+	case 1:
 		return "Destroyer";
-	case 3:
+	case 2:
 		return "Cruiser";
 	default:
 		return "Uninitialized";

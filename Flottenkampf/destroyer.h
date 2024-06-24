@@ -2,15 +2,15 @@
 
 #include "ship.h"
 
-class Cruiser : public Ship
+class Destroyer : public Ship
 {
 public:
-	Cruiser() 
+	Destroyer()
 	{
 		initialize();
 	}
 
-	~Cruiser() = default;
+	~Destroyer() = default;
 
 	void attack(Ship* other) override;
 

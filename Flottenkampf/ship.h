@@ -10,12 +10,12 @@ public:
 	Ship() {}
 	virtual ~Ship() = default;
 
-	virtual void attack(Ship& other) = 0;
-	//virtual const ShipType& getShipType() = 0;
+	virtual void attack(Ship* other) = 0;
 
 	int getHullHP() { return this->hullHP; }
 	int getSize() { return this->size; }
-	int getDamage() { return this->damage; }
+	int getAttackDamage() { return this->attackDamage; }
+	void takeDamage(int damage) { hullHP -= damage; }
 	const ShipType& getShipType() const { return type; }
 	const Ability& getAbility() const { return ability; }
 
@@ -24,7 +24,7 @@ protected:
 
 	int hullHP;
 	int size;
-	int damage;
+	int attackDamage;
 	ShipType type;
 	Ability ability;
 };
